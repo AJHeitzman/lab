@@ -1,6 +1,6 @@
 # Home Lab AI Baseline Context
 
-Last updated: 2026-04-12 16:36 (America/Chicago)
+Last updated: 2026-04-12 17:35 (America/Chicago)
 
 ## Purpose
 
@@ -23,6 +23,8 @@ lab/
   .kubeconfig-192.168.1.80.yaml
   k8s/
     helm/
+      argocd/
+      cert-manager/
       n8n/
       netbox/
       external-secrets/
@@ -144,6 +146,21 @@ Worker recovery note:
 - Vault endpoint in store: `http://openbao.openbao.svc.cluster.local:8200`
 - Manifest path: `k8s/manifests/external-secrets/openbao/store-and-sample.yaml`
 
+### Argo CD (GitOps)
+
+- Namespace: `argocd`
+- Helm chart: `argo/argo-cd` (`9.4.18`)
+- Service: NodePort `32090` (HTTP)
+- URL: `http://192.168.1.80:32090`
+- Local admin credentials are stored in `.env` as `ARGOCD_ADMIN_USER` and `ARGOCD_ADMIN_PASSWORD`.
+
+### cert-manager
+
+- Namespace: `cert-manager`
+- Helm chart: `jetstack/cert-manager` (`v1.19.4`)
+- CRDs installed via chart values
+- Current state: deployed and ready; no issuer configured yet.
+
 ## Credential Handling
 
 Credentials are stored in `.env` and referenced by key name only.
@@ -157,6 +174,7 @@ Current key groups include:
 - `N8N_*`
 - `NETBOX_*`
 - `OPENBAO_ROOT_TOKEN`
+- `ARGOCD_ADMIN_*`
 
 `.env` is excluded by `.gitignore`.
 
