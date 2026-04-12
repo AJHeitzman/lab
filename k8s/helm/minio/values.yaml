@@ -1,0 +1,30 @@
+﻿mode: standalone
+replicas: 1
+drivesPerNode: 1
+
+rootUser: ""
+rootPassword: ""
+
+service:
+  type: ClusterIP
+
+consoleService:
+  type: ClusterIP
+
+persistence:
+  enabled: true
+  storageClass: local-path
+  size: 10Gi
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 256Mi
+  limits:
+    cpu: 400m
+    memory: 512Mi
+
+buckets:
+  - name: velero
+    policy: none
+    purge: false

@@ -1,0 +1,16 @@
+﻿driver:
+  kind: ebpf
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 256Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi
+
+tty: true
+
+falco:
+  json_output: true
+  priority: notice

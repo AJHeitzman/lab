@@ -1,6 +1,6 @@
 # Home Lab AI Baseline Context
 
-Last updated: 2026-04-12 17:45 (America/Chicago)
+Last updated: 2026-04-12 18:28 (America/Chicago)
 
 ## Purpose
 
@@ -25,12 +25,15 @@ lab/
     helm/
       argocd/
       cert-manager/
+      falco/
       grafana/
       loki/
+      minio/
       n8n/
       netbox/
       opencost/
       prometheus/
+      velero/
       external-secrets/
       openbao/              # legacy values; chart currently incompatible with k3s 1.28
     manifests/
@@ -195,6 +198,22 @@ Worker recovery note:
 - URL: `http://192.168.1.80:32093`
 - OpenCost is configured to use internal Prometheus at `prometheus-server.observability.svc.cluster.local`.
 
+### Falco
+
+- Namespace: `falco`
+- Helm chart: `falcosecurity/falco` (`8.0.2`)
+- Runtime status: DaemonSet healthy on schedulable node(s)
+- Driver mode: legacy `ebpf` (modern eBPF failed on current RPi kernel build).
+
+### Velero + MinIO
+
+- Namespace: `velero`
+- Velero chart: `vmware-tanzu/velero` (`12.0.0`)
+- MinIO chart: `minio/minio` (`5.4.0`) as in-cluster S3-compatible target
+- Backup storage location: `default` is `Available`
+- Target endpoint: `velero-minio.velero.svc.cluster.local:9000`
+- Node-agent daemonset enabled for filesystem backup flow.
+
 ## Credential Handling
 
 Credentials are stored in `.env` and referenced by key name only.
@@ -210,6 +229,7 @@ Current key groups include:
 - `OPENBAO_ROOT_TOKEN`
 - `ARGOCD_ADMIN_*`
 - `GRAFANA_ADMIN_PASSWORD`
+- `VELERO_MINIO_*`
 
 `.env` is excluded by `.gitignore`.
 
@@ -225,4 +245,5 @@ Current key groups include:
 
 - Recover the 4 worker Pis (`192.168.0.181-184`) and restore `Ready` state.
 - After worker recovery, run OS/k3s patch upgrades on each worker to align with control-plane (`v1.28.15+k3s1`).
+- Create a cert-manager `ClusterIssuer` and migrate exposed NodePort apps to HTTPS ingress where practical.
 - Replace OpenBao dev mode with persistent/non-dev configuration when ready.
