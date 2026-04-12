@@ -1,0 +1,92 @@
+﻿apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "n8n.fullname" . }}
+  labels:
+    {{- include "n8n.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "n8n.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "n8n.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: n8n
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: 5678
+              name: http
+          env:
+            - name: N8N_PORT
+              value: "5678"
+            - name: N8N_PROTOCOL
+              value: "http"
+            - name: N8N_HOST
+              value: {{ .Values.env.externalHost | quote }}
+            - name: N8N_SECURE_COOKIE
+              value: {{ .Values.env.secureCookie | quote }}
+            - name: N8N_EDITOR_BASE_URL
+              value: "{{ .Values.env.externalProtocol }}://{{ .Values.env.externalHost }}:{{ .Values.service.nodePort }}"
+            - name: WEBHOOK_URL
+              value: "{{ .Values.env.externalProtocol }}://{{ .Values.env.externalHost }}:{{ .Values.service.nodePort }}"
+            - name: N8N_BASIC_AUTH_ACTIVE
+              value: "true"
+            - name: GENERIC_TIMEZONE
+              value: {{ .Values.env.timezone | quote }}
+            - name: TZ
+              value: {{ .Values.env.timezone | quote }}
+            - name: N8N_BASIC_AUTH_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "n8n.fullname" . }}-secret
+                  key: N8N_BASIC_AUTH_USER
+            - name: N8N_BASIC_AUTH_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "n8n.fullname" . }}-secret
+                  key: N8N_BASIC_AUTH_PASSWORD
+            - name: N8N_ENCRYPTION_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "n8n.fullname" . }}-secret
+                  key: N8N_ENCRYPTION_KEY
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: data
+              mountPath: /home/node/.n8n
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            initialDelaySeconds: 20
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            initialDelaySeconds: 60
+            periodSeconds: 20
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: {{ include "n8n.fullname" . }}-data
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

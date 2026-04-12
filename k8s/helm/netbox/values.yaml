@@ -1,0 +1,42 @@
+service:
+  type: NodePort
+  port: 80
+  nodePort: "32081"
+
+allowedHosts:
+  - "*"
+
+superuser:
+  name: "admin"
+  email: "admin@example.local"
+  password: ""
+
+secretKey: ""
+
+persistence:
+  enabled: true
+  storageClass: local-path
+  size: 2Gi
+
+postgresql:
+  enabled: true
+  primary:
+    persistence:
+      enabled: true
+      storageClass: local-path
+      size: 8Gi
+
+valkey:
+  enabled: true
+  architecture: standalone
+  master:
+    persistence:
+      enabled: true
+      storageClass: local-path
+      size: 2Gi
+
+
+worker:
+  waitForBackend:
+    enabled: false
+

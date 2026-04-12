@@ -1,0 +1,24 @@
+﻿global:
+  tlsDisable: true
+
+injector:
+  enabled: false
+
+server:
+  dev:
+    enabled: true
+    devRootToken: ""
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+
+ui:
+  enabled: true
+  serviceType: NodePort
+  serviceNodePort: 32000
+  externalPort: 8200
+  targetPort: 8200

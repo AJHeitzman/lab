@@ -1,0 +1,13 @@
+﻿# Environment secrets
+.env
+.env.*
+
+# Local kube configs / secrets
+*.kubeconfig
+kubeconfig*
+.kubeconfig*
+secrets/
+
+# Editor / OS
+.DS_Store
+Thumbs.db

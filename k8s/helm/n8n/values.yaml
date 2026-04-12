@@ -1,0 +1,39 @@
+﻿replicaCount: 1
+
+image:
+  repository: n8nio/n8n
+  tag: "1.88.0"
+  pullPolicy: IfNotPresent
+
+service:
+  type: NodePort
+  port: 5678
+  nodePort: 31789
+
+persistence:
+  enabled: true
+  size: 5Gi
+  storageClassName: local-path
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 256Mi
+  limits:
+    cpu: 500m
+    memory: 1Gi
+
+env:
+  timezone: America/Chicago
+  externalProtocol: http
+  externalHost: 192.168.1.80
+  secureCookie: false
+
+secrets:
+  basicAuthUser: ""
+  basicAuthPassword: ""
+  encryptionKey: ""
+
+nodeSelector: {}
+tolerations: []
+affinity: {}

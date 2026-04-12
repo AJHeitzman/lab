@@ -1,0 +1,38 @@
+apiVersion: external-secrets.io/v1beta1
+kind: ClusterSecretStore
+metadata:
+  name: openbao-store
+spec:
+  provider:
+    vault:
+      server: "http://openbao.lab-infra.svc.cluster.local:8200"
+      path: "secret"
+      version: "v2"
+      auth:
+        tokenSecretRef:
+          name: openbao-root-token
+          key: token
+          namespace: lab-infra
+---
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: openbao-sample-secret
+  namespace: default
+spec:
+  refreshInterval: 1h
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: openbao-store
+  target:
+    name: demo-from-openbao
+    creationPolicy: Owner
+  data:
+    - secretKey: username
+      remoteRef:
+        key: lab/sample
+        property: username
+    - secretKey: password
+      remoteRef:
+        key: lab/sample
+        property: password
