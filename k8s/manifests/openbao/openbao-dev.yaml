@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: openbao
-  namespace: lab-infra
+  namespace: openbao
   labels:
     app.kubernetes.io/name: openbao
 spec:
@@ -59,7 +59,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: openbao
-  namespace: lab-infra
+  namespace: openbao
 spec:
   type: NodePort
   selector:

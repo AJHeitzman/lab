@@ -5,14 +5,14 @@ metadata:
 spec:
   provider:
     vault:
-      server: "http://openbao.lab-infra.svc.cluster.local:8200"
+      server: "http://openbao.openbao.svc.cluster.local:8200"
       path: "secret"
       version: "v2"
       auth:
         tokenSecretRef:
           name: openbao-root-token
           key: token
-          namespace: lab-infra
+          namespace: openbao
 ---
 apiVersion: external-secrets.io/v1beta1
 kind: ExternalSecret

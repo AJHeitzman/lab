@@ -23,7 +23,7 @@ secrets:
 "@ | Set-Content -Path $tmpVals -Encoding UTF8
 
 helm upgrade --install n8n .\k8s\helm\n8n `
-  --namespace default `
+  --namespace n8n --create-namespace `
   --kubeconfig $kcfg `
   -f .\k8s\helm\n8n\values.yaml `
   -f $tmpVals
@@ -38,12 +38,8 @@ helm upgrade --install n8n .\k8s\helm\n8n `
 ## Verify
 
 ```powershell
-kubectl --kubeconfig C:\SourceControl\youtube_downloader\k3s-remote-kubeconfig.yaml -n default get deploy,pods,svc,pvc | findstr n8n
+kubectl --kubeconfig C:\SourceControl\youtube_downloader\k3s-remote-kubeconfig.yaml -n n8n get deploy,pods,svc,pvc | findstr n8n
 ```
-
-## Current namespace note
-
-`n8n` is currently deployed in `default` because Rancher webhook issues blocked creating a new namespace during deployment.
 
 ## TLS note
 

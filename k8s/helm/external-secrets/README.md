@@ -2,7 +2,7 @@
 
 Chart: `external-secrets/external-secrets`
 Version: `0.10.7`
-Namespace: `lab-infra`
+Namespace: `external-secrets`
 
 ## Why This Version
 
@@ -17,7 +17,7 @@ Newer chart versions worked poorly on this k3s baseline (`v1.28.x`) due CRD vali
 ## Included OpenBao Integration Manifest
 
 - `k8s/manifests/external-secrets/openbao/store-and-sample.yaml`
-  - `ClusterSecretStore` -> OpenBao in `lab-infra`
+  - `ClusterSecretStore` -> OpenBao in `openbao`
   - demo `ExternalSecret` -> `default/demo-from-openbao`
 
 ## Deploy
@@ -25,6 +25,6 @@ Newer chart versions worked poorly on this k3s baseline (`v1.28.x`) due CRD vali
 ```bash
 helm upgrade --install external-secrets external-secrets/external-secrets \
   --version 0.10.7 \
-  -n lab-infra --create-namespace \
+  -n external-secrets --create-namespace \
   -f k8s/helm/external-secrets/values.yaml
 ```

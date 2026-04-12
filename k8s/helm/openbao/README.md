@@ -1,6 +1,6 @@
 # OpenBao Deployment
 
-Namespace: `lab-infra`
+Namespace: `openbao`
 Deployment method: Kubernetes manifest (not Helm chart)
 
 ## Why Manifest-Based

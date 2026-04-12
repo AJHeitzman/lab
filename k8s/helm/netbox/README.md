@@ -2,7 +2,7 @@
 
 Chart: `netbox/netbox`
 Version: `8.0.29`
-Namespace: `lab-infra`
+Namespace: `netbox`
 
 ## Access
 
@@ -26,7 +26,7 @@ Secret overrides from `.env`:
 ```bash
 helm upgrade --install netbox netbox/netbox \
   --version 8.0.29 \
-  -n lab-infra --create-namespace \
+  -n netbox --create-namespace \
   -f k8s/helm/netbox/values.yaml \
   --set superuser.name=$NETBOX_SUPERUSER_USERNAME \
   --set superuser.email=$NETBOX_SUPERUSER_EMAIL \

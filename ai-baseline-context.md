@@ -1,6 +1,6 @@
 # Home Lab AI Baseline Context
 
-Last updated: 2026-04-12 15:17 (America/Chicago)
+Last updated: 2026-04-12 16:36 (America/Chicago)
 
 ## Purpose
 
@@ -108,14 +108,14 @@ Worker recovery note:
 
 ### n8n
 
-- Namespace: `default`
+- Namespace: `n8n`
 - Service: NodePort `31789`
 - URL: `http://192.168.1.80:31789`
 - HTTP mode kept intentionally (`N8N_SECURE_COOKIE=false`) for current LAN-only bootstrap.
 
 ### NetBox (IPAM)
 
-- Namespace: `lab-infra`
+- Namespace: `netbox`
 - Helm chart: `netbox/netbox` (`8.0.29`)
 - Service: NodePort `32081`
 - URL: `http://192.168.1.80:32081/login/`
@@ -123,7 +123,7 @@ Worker recovery note:
 
 ### OpenBao (Secrets backend)
 
-- Namespace: `lab-infra`
+- Namespace: `openbao`
 - Deployed via manifest (`k8s/manifests/openbao/openbao-dev.yaml`)
 - Service: NodePort `32000`
 - URL/API: `http://192.168.1.80:32000`
@@ -131,7 +131,7 @@ Worker recovery note:
 
 ### External Secrets Operator (ESO)
 
-- Namespace: `lab-infra`
+- Namespace: `external-secrets`
 - Helm chart: `external-secrets/external-secrets` version `0.10.7`
 - Reason for version pin: compatible with current k3s/k8s level and avoids CRD validation issues seen with newer release.
 - PushSecret processing disabled (`processPushSecret=false`) to match CRD selection.
@@ -141,6 +141,7 @@ Worker recovery note:
 - `ClusterSecretStore`: `openbao-store`
 - Demo `ExternalSecret`: `default/openbao-sample-secret`
 - Synced secret output: `default/demo-from-openbao`
+- Vault endpoint in store: `http://openbao.openbao.svc.cluster.local:8200`
 - Manifest path: `k8s/manifests/external-secrets/openbao/store-and-sample.yaml`
 
 ## Credential Handling
@@ -171,5 +172,4 @@ Current key groups include:
 
 - Recover the 4 worker Pis (`192.168.0.181-184`) and restore `Ready` state.
 - After worker recovery, run OS/k3s patch upgrades on each worker to align with control-plane (`v1.28.15+k3s1`).
-- Decide whether to keep n8n in `default` or migrate to a dedicated namespace.
 - Replace OpenBao dev mode with persistent/non-dev configuration when ready.
