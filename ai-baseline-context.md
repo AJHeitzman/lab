@@ -1,6 +1,6 @@
 # Home Lab AI Baseline Context
 
-Last updated: 2026-04-12 17:35 (America/Chicago)
+Last updated: 2026-04-12 17:45 (America/Chicago)
 
 ## Purpose
 
@@ -25,8 +25,12 @@ lab/
     helm/
       argocd/
       cert-manager/
+      grafana/
+      loki/
       n8n/
       netbox/
+      opencost/
+      prometheus/
       external-secrets/
       openbao/              # legacy values; chart currently incompatible with k3s 1.28
     manifests/
@@ -161,6 +165,36 @@ Worker recovery note:
 - CRDs installed via chart values
 - Current state: deployed and ready; no issuer configured yet.
 
+### Prometheus
+
+- Namespace: `observability`
+- Helm chart: `prometheus-community/prometheus` (`29.2.0`)
+- Service: NodePort `32091`
+- URL: `http://192.168.1.80:32091`
+
+### Grafana
+
+- Namespace: `observability`
+- Helm chart: `grafana/grafana` (`10.5.15`)
+- Service: NodePort `32030`
+- URL: `http://192.168.1.80:32030`
+- Grafana credentials are stored in `.env` (`GRAFANA_ADMIN_PASSWORD`, user `admin`).
+
+### Loki
+
+- Namespace: `observability`
+- Helm chart: `grafana/loki-stack` (`2.10.3`)
+- Service: `loki.observability.svc.cluster.local:3100` (ClusterIP)
+- `promtail` DaemonSet is enabled for log shipping.
+
+### OpenCost
+
+- Namespace: `opencost`
+- Helm chart: `opencost/opencost` (`2.5.12`)
+- Service: NodePort `32093` (UI)
+- URL: `http://192.168.1.80:32093`
+- OpenCost is configured to use internal Prometheus at `prometheus-server.observability.svc.cluster.local`.
+
 ## Credential Handling
 
 Credentials are stored in `.env` and referenced by key name only.
@@ -175,6 +209,7 @@ Current key groups include:
 - `NETBOX_*`
 - `OPENBAO_ROOT_TOKEN`
 - `ARGOCD_ADMIN_*`
+- `GRAFANA_ADMIN_PASSWORD`
 
 `.env` is excluded by `.gitignore`.
 
