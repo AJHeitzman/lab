@@ -1,0 +1,136 @@
+﻿{
+    "updatedAt":  "2026-04-13T15:59:58.139Z",
+    "createdAt":  "2026-04-13T15:59:58.139Z",
+    "id":  "lvHCeJc2qBvuceY8",
+    "name":  "Email Important Summary (API Scaffold)",
+    "description":  null,
+    "active":  false,
+    "isArchived":  false,
+    "nodes":  [
+                  {
+                      "id":  "manual-trigger-1",
+                      "name":  "Manual Trigger",
+                      "parameters":  {
+
+                                     },
+                      "type":  "n8n-nodes-base.manualTrigger",
+                      "position":  [
+                                       180,
+                                       260
+                                   ],
+                      "typeVersion":  1
+                  },
+                  {
+                      "id":  "imap-read-1",
+                      "name":  "Read Inbox (IMAP)",
+                      "parameters":  {
+                                         "mailbox":  "INBOX",
+                                         "options":  {
+
+                                                     }
+                                     },
+                      "type":  "n8n-nodes-base.emailReadImap",
+                      "position":  [
+                                       420,
+                                       260
+                                   ],
+                      "typeVersion":  2
+                  },
+                  {
+                      "id":  "code-important-1",
+                      "name":  "Classify Important",
+                      "parameters":  {
+                                         "jsCode":  "const importantKeywords = [\n  \"urgent\",\"asap\",\"action required\",\"deadline\",\"payment due\",\"incident\",\"outage\",\"security\",\"failed\"\n];\n\nconst normalized = items.map(({ json }) =\u003e {\n  const subject = (json.subject || \u0027\u0027).toLowerCase();\n  const text = (json.textPlain || json.textHtml || \u0027\u0027).toLowerCase();\n  const matched = importantKeywords.filter(k =\u003e subject.includes(k) || text.includes(k));\n  return {\n    ...json,\n    importanceScore: matched.length,\n    matchedKeywords: matched,\n    isImportant: matched.length \u003e 0,\n  };\n});\n\nconst important = normalized.filter(i =\u003e i.isImportant);\nconst lines = important.slice(0, 25).map((m, idx) =\u003e {\n  const fromPart = m.from ? ` | from ${m.from}` : \u0027\u0027;\n  const datePart = m.date ? ` | ${m.date}` : \u0027\u0027;\n  return `${idx + 1}. ${m.subject || \u0027(no subject)\u0027}${fromPart}${datePart}`;\n});\n\nreturn [\n  {\n    json: {\n      scannedCount: normalized.length,\n      importantCount: important.length,\n      summary: lines.length ? lines.join(\u0027\\n\u0027) : \u0027No important emails found in this run.\u0027,\n      generatedAt: new Date().toISOString(),\n    },\n  },\n];",
+                                         "mode":  "runOnceForAllItems"
+                                     },
+                      "type":  "n8n-nodes-base.code",
+                      "position":  [
+                                       700,
+                                       260
+                                   ],
+                      "typeVersion":  2
+                  }
+              ],
+    "connections":  {
+                        "Read Inbox (IMAP)":  {
+                                                  "main":  [
+                                                               {
+                                                                   "node":  "Classify Important",
+                                                                   "type":  "main",
+                                                                   "index":  0
+                                                               }
+                                                           ]
+                                              },
+                        "Manual Trigger":  {
+                                               "main":  [
+                                                            {
+                                                                "node":  "Read Inbox (IMAP)",
+                                                                "type":  "main",
+                                                                "index":  0
+                                                            }
+                                                        ]
+                                           }
+                    },
+    "settings":  {
+                     "executionOrder":  "v1",
+                     "callerPolicy":  "workflowsFromSameOwner",
+                     "availableInMCP":  false
+                 },
+    "staticData":  null,
+    "meta":  null,
+    "pinData":  null,
+    "versionId":  "3af2d385-407e-4c81-8986-f080488b74fb",
+    "versionCounter":  1,
+    "triggerCount":  0,
+    "shared":  [
+                   {
+                       "updatedAt":  "2026-04-13T15:59:58.203Z",
+                       "createdAt":  "2026-04-13T15:59:58.203Z",
+                       "role":  "workflow:owner",
+                       "workflowId":  "lvHCeJc2qBvuceY8",
+                       "projectId":  "3gXLfJXPmoVZmz5A",
+                       "project":  {
+                                       "updatedAt":  "2026-04-13T15:35:11.571Z",
+                                       "createdAt":  "2026-04-12T21:11:33.977Z",
+                                       "id":  "3gXLfJXPmoVZmz5A",
+                                       "name":  "Adam Heitzman \u003cadamjheitzman@gmail.com\u003e",
+                                       "type":  "personal",
+                                       "icon":  null,
+                                       "description":  null,
+                                       "projectRelations":  [
+                                                                {
+                                                                    "updatedAt":  "2026-04-12T21:11:33.978Z",
+                                                                    "createdAt":  "2026-04-12T21:11:33.978Z",
+                                                                    "userId":  "e723c126-d72a-45d3-b93a-5cf954766a5c",
+                                                                    "projectId":  "3gXLfJXPmoVZmz5A",
+                                                                    "user":  {
+                                                                                 "updatedAt":  "2026-04-13T15:35:35.000Z",
+                                                                                 "createdAt":  "2026-04-12T21:11:31.253Z",
+                                                                                 "id":  "e723c126-d72a-45d3-b93a-5cf954766a5c",
+                                                                                 "email":  "adamjheitzman@gmail.com",
+                                                                                 "firstName":  "Adam",
+                                                                                 "lastName":  "Heitzman",
+                                                                                 "personalizationAnswers":  {
+                                                                                                                "version":  "v4",
+                                                                                                                "personalization_survey_submitted_at":  "2026-04-13T15:35:33.038Z",
+                                                                                                                "personalization_survey_n8n_version":  "1.121.0",
+                                                                                                                "companyType":  "personal",
+                                                                                                                "reportedSource":  "friend"
+                                                                                                            },
+                                                                                 "settings":  {
+                                                                                                  "userActivated":  false
+                                                                                              },
+                                                                                 "disabled":  false,
+                                                                                 "mfaEnabled":  false,
+                                                                                 "lastActiveAt":  "2026-04-13",
+                                                                                 "isPending":  false
+                                                                             }
+                                                                }
+                                                            ]
+                                   }
+                   }
+               ],
+    "tags":  [
+
+             ]
+}

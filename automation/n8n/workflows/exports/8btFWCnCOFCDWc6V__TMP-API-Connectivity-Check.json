@@ -1,0 +1,88 @@
+﻿{
+    "updatedAt":  "2026-04-13T15:56:15.309Z",
+    "createdAt":  "2026-04-13T15:56:15.309Z",
+    "id":  "8btFWCnCOFCDWc6V",
+    "name":  "TMP API Connectivity Check",
+    "description":  null,
+    "active":  false,
+    "isArchived":  false,
+    "nodes":  [
+                  {
+                      "id":  "manual-trigger-1",
+                      "name":  "Manual Trigger",
+                      "parameters":  {
+
+                                     },
+                      "type":  "n8n-nodes-base.manualTrigger",
+                      "position":  [
+                                       260,
+                                       300
+                                   ],
+                      "typeVersion":  1
+                  }
+              ],
+    "connections":  {
+
+                    },
+    "settings":  {
+                     "callerPolicy":  "workflowsFromSameOwner",
+                     "availableInMCP":  false
+                 },
+    "staticData":  null,
+    "meta":  null,
+    "pinData":  null,
+    "versionId":  "917ce503-4089-43c8-9ffa-9f539c17596f",
+    "versionCounter":  1,
+    "triggerCount":  0,
+    "shared":  [
+                   {
+                       "updatedAt":  "2026-04-13T15:56:15.907Z",
+                       "createdAt":  "2026-04-13T15:56:15.907Z",
+                       "role":  "workflow:owner",
+                       "workflowId":  "8btFWCnCOFCDWc6V",
+                       "projectId":  "3gXLfJXPmoVZmz5A",
+                       "project":  {
+                                       "updatedAt":  "2026-04-13T15:35:11.571Z",
+                                       "createdAt":  "2026-04-12T21:11:33.977Z",
+                                       "id":  "3gXLfJXPmoVZmz5A",
+                                       "name":  "Adam Heitzman \u003cadamjheitzman@gmail.com\u003e",
+                                       "type":  "personal",
+                                       "icon":  null,
+                                       "description":  null,
+                                       "projectRelations":  [
+                                                                {
+                                                                    "updatedAt":  "2026-04-12T21:11:33.978Z",
+                                                                    "createdAt":  "2026-04-12T21:11:33.978Z",
+                                                                    "userId":  "e723c126-d72a-45d3-b93a-5cf954766a5c",
+                                                                    "projectId":  "3gXLfJXPmoVZmz5A",
+                                                                    "user":  {
+                                                                                 "updatedAt":  "2026-04-13T15:35:35.000Z",
+                                                                                 "createdAt":  "2026-04-12T21:11:31.253Z",
+                                                                                 "id":  "e723c126-d72a-45d3-b93a-5cf954766a5c",
+                                                                                 "email":  "adamjheitzman@gmail.com",
+                                                                                 "firstName":  "Adam",
+                                                                                 "lastName":  "Heitzman",
+                                                                                 "personalizationAnswers":  {
+                                                                                                                "version":  "v4",
+                                                                                                                "personalization_survey_submitted_at":  "2026-04-13T15:35:33.038Z",
+                                                                                                                "personalization_survey_n8n_version":  "1.121.0",
+                                                                                                                "companyType":  "personal",
+                                                                                                                "reportedSource":  "friend"
+                                                                                                            },
+                                                                                 "settings":  {
+                                                                                                  "userActivated":  false
+                                                                                              },
+                                                                                 "disabled":  false,
+                                                                                 "mfaEnabled":  false,
+                                                                                 "lastActiveAt":  "2026-04-13",
+                                                                                 "isPending":  false
+                                                                             }
+                                                                }
+                                                            ]
+                                   }
+                   }
+               ],
+    "tags":  [
+
+             ]
+}

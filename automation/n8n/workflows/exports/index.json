@@ -1,0 +1,21 @@
+﻿{
+    "exportedAt":  "2026-04-13T11:00:54.3847078-05:00",
+    "baseUrl":  "http://192.168.1.80:31789",
+    "count":  2,
+    "workflows":  [
+                      {
+                          "id":  "8btFWCnCOFCDWc6V",
+                          "name":  "TMP API Connectivity Check",
+                          "file":  "8btFWCnCOFCDWc6V__TMP-API-Connectivity-Check.json",
+                          "active":  false,
+                          "updatedAt":  "2026-04-13T15:56:15.309Z"
+                      },
+                      {
+                          "id":  "lvHCeJc2qBvuceY8",
+                          "name":  "Email Important Summary (API Scaffold)",
+                          "file":  "lvHCeJc2qBvuceY8__Email-Important-Summary-API-Scaffold.json",
+                          "active":  false,
+                          "updatedAt":  "2026-04-13T15:59:58.139Z"
+                      }
+                  ]
+}

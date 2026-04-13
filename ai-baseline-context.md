@@ -1,6 +1,6 @@
 # Home Lab AI Baseline Context
 
-Last updated: 2026-04-12 18:28 (America/Chicago)
+Last updated: 2026-04-13 11:01 (America/Chicago)
 
 ## Purpose
 
@@ -11,6 +11,7 @@ This repository is the baseline operational context for the home lab. It is inte
 - `network_devices.csv`: canonical network inventory and device metadata.
 - `.env`: credentials and secrets (never commit to git).
 - `k8s/helm/*` and `k8s/manifests/*`: deployment definitions for lab services.
+- `automation/n8n/*`: n8n workflow exports/templates and API helper scripts.
 
 ## Repo Layout
 
@@ -21,6 +22,15 @@ lab/
   .env                      # gitignored (secrets)
   .gitignore
   .kubeconfig-192.168.1.80.yaml
+  automation/
+    n8n/
+      README.md
+      scripts/
+        export-workflows.ps1
+        import-workflow.ps1
+      workflows/
+        exports/
+        templates/
   k8s/
     helm/
       argocd/
@@ -120,7 +130,12 @@ Worker recovery note:
 - Namespace: `n8n`
 - Service: NodePort `31789`
 - URL: `http://192.168.1.80:31789`
+- Public API base: `http://192.168.1.80:31789/api/v1`
 - HTTP mode kept intentionally (`N8N_SECURE_COOKIE=false`) for current LAN-only bootstrap.
+- API auth key reference: `N8N_API_KEY` (stored in `.env`).
+- API-created workflows currently present:
+  - `8btFWCnCOFCDWc6V`: `TMP API Connectivity Check`
+  - `lvHCeJc2qBvuceY8`: `Email Important Summary (API Scaffold)` (template scaffold, not production-final)
 
 ### NetBox (IPAM)
 
@@ -240,6 +255,7 @@ Current key groups include:
 3. Validate management reachability before attempting remote ops.
 4. For k3s changes, verify Rancher webhook health first (`cattle-system/rancher-webhook`).
 5. Keep service definitions in `k8s/` aligned with runtime state after every change.
+6. For n8n workflow changes, export updated JSON to `automation/n8n/workflows/exports/` and keep reusable templates in `automation/n8n/workflows/templates/`.
 
 ## Next Actions
 
@@ -247,3 +263,4 @@ Current key groups include:
 - After worker recovery, run OS/k3s patch upgrades on each worker to align with control-plane (`v1.28.15+k3s1`).
 - Create a cert-manager `ClusterIssuer` and migrate exposed NodePort apps to HTTPS ingress where practical.
 - Replace OpenBao dev mode with persistent/non-dev configuration when ready.
+- Complete n8n email summary flow by attaching IMAP credentials, replacing manual trigger with a schedule trigger, and adding a delivery node (email/Slack/Teams).
