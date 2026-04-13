@@ -31,6 +31,10 @@ lab/
       workflows/
         exports/
         templates/
+    netbox/
+      README.md
+      scripts/
+        sync-network-devices-to-netbox.ps1
   k8s/
     helm/
       argocd/
@@ -145,6 +149,8 @@ Worker recovery note:
 - URL: `http://192.168.1.80:32081/login/`
 - Worker wait-for-backend init was disabled in values to avoid rollout deadlock during first bootstrap.
 - `API_TOKEN_PEPPERS` is configured via `extraConfig` secret `netbox-extra-config` to enable v2 API token creation.
+- `network_devices.csv` sync helper: `automation/netbox/scripts/sync-network-devices-to-netbox.ps1`
+- Current sync state (2026-04-13): `258` usable hosts from CSV upserted into NetBox IP addresses and tagged `network-csv-import`.
 
 ### OpenBao (Secrets backend)
 
