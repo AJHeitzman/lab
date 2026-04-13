@@ -83,7 +83,7 @@ Current columns:
 1. Keep `network_devices.csv` as inventory source of truth.
 2. Update `Name`, `Description`, `Notes`, and `CredentialRef` when a device is identified.
 3. Store only credential key references in CSV/Markdown.
-4. Include infra outside `192.168.1.0/24` when relevant (k3s workers currently in `192.168.0.0/24`).
+4. Include infra outside `192.168.1.0/24` when relevant.
 5. Update `LastUpdated` on every manual edit.
 6. NetBox is the system-of-record for modeled assets (Devices/VMs, interfaces, primary IP relationships) after sync.
 
@@ -111,15 +111,15 @@ Current columns:
 
 Workers (all currently `NotReady`):
 
-- `oma01rpicls01wknd01` (`192.168.0.181`)
-- `oma01rpicls01wknd02` (`192.168.0.182`)
-- `oma01rpicls01wknd03` (`192.168.0.183`)
-- `oma01rpicls01wknd04` (`192.168.0.184`)
+- `oma01rpicls01wknd01` (`192.168.1.81`)
+- `oma01rpicls01wknd02` (`192.168.1.82`)
+- `oma01rpicls01wknd03` (`192.168.1.83`)
+- `oma01rpicls01wknd04` (`192.168.1.84`)
 
 Worker recovery note:
 
-- Workers remained unreachable even after adding a temporary secondary address (`192.168.0.250/24`) to master NIC for direct L2 reachability testing.
-- This indicates the workers are likely offline and/or still isolated on old addressing without path back to master.
+- Worker inventory addressing was corrected to `192.168.1.81-84` on 2026-04-13.
+- Cluster readiness still needs validation after the address correction.
 
 ### Rancher
 
@@ -275,7 +275,7 @@ Current key groups include:
 
 ## Next Actions
 
-- Recover the 4 worker Pis (`192.168.0.181-184`) and restore `Ready` state.
+- Recover the 4 worker Pis (`192.168.1.81-84`) and restore `Ready` state.
 - After worker recovery, run OS/k3s patch upgrades on each worker to align with control-plane (`v1.28.15+k3s1`).
 - Create a cert-manager `ClusterIssuer` and migrate exposed NodePort apps to HTTPS ingress where practical.
 - Replace OpenBao dev mode with persistent/non-dev configuration when ready.
