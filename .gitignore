@@ -8,6 +8,9 @@ kubeconfig*
 .kubeconfig*
 secrets/
 
+# Local API inventory snapshots
+automation/unifi/data/*.json
+
 # Editor / OS
 .DS_Store
 Thumbs.db

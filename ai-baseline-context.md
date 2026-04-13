@@ -1,6 +1,6 @@
 # Home Lab AI Baseline Context
 
-Last updated: 2026-04-13 12:00 (America/Chicago)
+Last updated: 2026-04-13 12:46 (America/Chicago)
 
 ## Purpose
 
@@ -13,6 +13,7 @@ This repository is the baseline operational context for the home lab. It is inte
 - `k8s/helm/*` and `k8s/manifests/*`: deployment definitions for lab services.
 - `automation/n8n/*`: n8n workflow exports/templates and API helper scripts.
 - `automation/netbox/*`: NetBox IPAM + asset sync scripts.
+- `automation/unifi/*`: UniFi (UDM Pro) inventory fetch + NetBox sync scripts.
 
 ## Repo Layout
 
@@ -37,6 +38,13 @@ lab/
       scripts/
         sync-network-devices-to-netbox.ps1
         sync-netbox-assets-from-csv.ps1
+    unifi/
+      README.md
+      data/
+        unifi-inventory-latest.json
+      scripts/
+        fetch-unifi-inventory.ps1
+        sync-unifi-to-netbox.ps1
   k8s/
     helm/
       argocd/
@@ -92,7 +100,7 @@ Current columns:
 ### Network
 
 - Primary LAN: `192.168.1.0/24`
-- Gateway/router: `192.168.1.1`
+- Gateway/router: Ubiquiti UniFi Dream Machine Pro Max (`192.168.1.1`)
 - Cisco switch mgmt: `192.168.1.2/24` (migrated from `192.168.0.2/24`)
 
 ### Cisco Switch
@@ -159,6 +167,24 @@ Worker recovery note:
   - `7` physical devices in `dcim/devices` with `primary_ip4` linkage.
   - `1` VM in `virtualization/virtual-machines` (`rancherweb01`) with `primary_ip4` linkage.
   - Current VM cluster for lab guests: `homelab-vms`.
+
+### UniFi / UDM API Automation
+
+- UDM host: `192.168.1.1` (`UDM_PRO_HOST`)
+- Auth mode: `X-API-Key` header with `.env` key `UDM_PRO_API_KEY`
+- API base in use: `https://192.168.1.1/proxy/network/integration/v1`
+- Discovered/used endpoints:
+  - `GET /sites`
+  - `GET /sites/{siteId}/devices`
+  - `GET /sites/{siteId}/clients`
+  - `GET /sites/{siteId}/networks`
+- Scripts:
+  - `automation/unifi/scripts/fetch-unifi-inventory.ps1`
+  - `automation/unifi/scripts/sync-unifi-to-netbox.ps1`
+- Current UniFi sync state (2026-04-13):
+  - inventory fetched from UniFi: `1` site, `1` UniFi device, `46` clients, `1` network
+  - NetBox updates: `Dream Machine Pro Max` device tagged `unifi,unifi-device`, primary IP set to `192.168.1.1/32`
+  - `39` private-lan UniFi client IPs tagged `unifi-client` (conservative IP-level sync)
 
 ### OpenBao (Secrets backend)
 
@@ -256,6 +282,7 @@ Current key groups include:
 - `VM_HOST_IP`
 - `N8N_*`
 - `NETBOX_*`
+- `UDM_PRO_*`
 - `OPENBAO_ROOT_TOKEN`
 - `ARGOCD_ADMIN_*`
 - `GRAFANA_ADMIN_PASSWORD`
@@ -272,6 +299,7 @@ Current key groups include:
 5. Keep service definitions in `k8s/` aligned with runtime state after every change.
 6. For n8n workflow changes, export updated JSON to `automation/n8n/workflows/exports/` and keep reusable templates in `automation/n8n/workflows/templates/`.
 7. For inventory updates, run both NetBox sync scripts: first `sync-network-devices-to-netbox.ps1` (IPs/prefixes), then `sync-netbox-assets-from-csv.ps1` (devices/VMs + primary IP links).
+8. For UniFi context refresh, run `automation/unifi/scripts/fetch-unifi-inventory.ps1` and then `automation/unifi/scripts/sync-unifi-to-netbox.ps1 -FetchFresh`.
 
 ## Next Actions
 

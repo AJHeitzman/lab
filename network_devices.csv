@@ -4,7 +4,7 @@
 "192.168.0.183","183","TRUE","FALSE","","","2026-04-12 15:17:36","","","","","","2026-04-13 12:17:21"
 "192.168.0.184","184","TRUE","FALSE","","","2026-04-12 15:17:36","","","","","","2026-04-13 12:17:21"
 "192.168.1.0","0","FALSE","FALSE","","","4/11/2026 14:49","","","","","","4/11/2026 14:49"
-"192.168.1.1","1","TRUE","TRUE","0","unifi.localdomain","4/11/2026 14:49","","","","","","4/11/2026 14:49"
+"192.168.1.1","1","TRUE","TRUE","0","","4/11/2026 14:49","udm-pro-max","Ubiquiti UniFi Dream Machine Pro Max (gateway/router)","Managed via UniFi Integration API using UDM_PRO_API_KEY. Automation sync scripts under automation/unifi/ can ingest sites/devices/clients into NetBox.","UDM_PRO_API_KEY,UDM_PRO_HOST","TRUE","2026-04-13 12:45:59"
 "192.168.1.2","2","TRUE","FALSE","","","4/11/2026 14:49","csgsw01","Cisco Catalyst 2960X 48-port PoE switch (management SVI on VLAN 1).","Management moved from 192.168.0.2/24 to 192.168.1.2/24 with gateway 192.168.1.1 on 2026-04-12 via console.","SWITCH_CISCO_2960_HOST,SWITCH_CISCO_2960_ENABLE_SECRET","TRUE","2026-04-12 14:11:59"
 "192.168.1.3","3","TRUE","FALSE","","","4/11/2026 14:49","","","","","","4/11/2026 14:49"
 "192.168.1.4","4","TRUE","FALSE","","","4/11/2026 14:49","","","","","","4/11/2026 14:49"
