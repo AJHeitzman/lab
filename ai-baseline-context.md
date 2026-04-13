@@ -144,6 +144,7 @@ Worker recovery note:
 - Service: NodePort `32081`
 - URL: `http://192.168.1.80:32081/login/`
 - Worker wait-for-backend init was disabled in values to avoid rollout deadlock during first bootstrap.
+- `API_TOKEN_PEPPERS` is configured via `extraConfig` secret `netbox-extra-config` to enable v2 API token creation.
 
 ### OpenBao (Secrets backend)
 

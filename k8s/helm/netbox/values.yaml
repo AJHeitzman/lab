@@ -13,6 +13,10 @@ superuser:
 
 secretKey: ""
 
+extraConfig:
+  - secret:
+      secretName: netbox-extra-config
+
 persistence:
   enabled: true
   storageClass: local-path
@@ -39,4 +43,13 @@ valkey:
 worker:
   waitForBackend:
     enabled: false
+
+livenessProbe:
+  timeoutSeconds: 5
+
+readinessProbe:
+  timeoutSeconds: 5
+
+startupProbe:
+  timeoutSeconds: 5
 

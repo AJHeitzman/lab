@@ -20,10 +20,20 @@ Secret overrides from `.env`:
 - `NETBOX_SUPERUSER_EMAIL`
 - `NETBOX_SUPERUSER_PASSWORD`
 - `NETBOX_SECRET_KEY`
+- `NETBOX_API_TOKEN_PEPPER` (required for creating v2 API tokens)
 
 ## Deploy
 
 ```bash
+cat > /tmp/netbox-extra-config.yaml <<'EOF'
+API_TOKEN_PEPPERS:
+  1: "${NETBOX_API_TOKEN_PEPPER}"
+EOF
+
+kubectl -n netbox create secret generic netbox-extra-config \
+  --from-file=token-pepper.yaml=/tmp/netbox-extra-config.yaml \
+  --dry-run=client -o yaml | kubectl apply -f -
+
 helm upgrade --install netbox netbox/netbox \
   --version 8.0.29 \
   -n netbox --create-namespace \
@@ -37,3 +47,5 @@ helm upgrade --install netbox netbox/netbox \
 ## Note
 
 `worker.waitForBackend.enabled` is set to `false` to avoid init deadlock during first bootstrap on this cluster.
+
+`API_TOKEN_PEPPERS` is delivered via the `netbox-extra-config` secret (mounted using `extraConfig`).
