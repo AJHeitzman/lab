@@ -1,6 +1,6 @@
 # Home Lab AI Baseline Context
 
-Last updated: 2026-04-13 11:01 (America/Chicago)
+Last updated: 2026-04-13 12:00 (America/Chicago)
 
 ## Purpose
 
@@ -12,6 +12,7 @@ This repository is the baseline operational context for the home lab. It is inte
 - `.env`: credentials and secrets (never commit to git).
 - `k8s/helm/*` and `k8s/manifests/*`: deployment definitions for lab services.
 - `automation/n8n/*`: n8n workflow exports/templates and API helper scripts.
+- `automation/netbox/*`: NetBox IPAM + asset sync scripts.
 
 ## Repo Layout
 
@@ -35,6 +36,7 @@ lab/
       README.md
       scripts/
         sync-network-devices-to-netbox.ps1
+        sync-netbox-assets-from-csv.ps1
   k8s/
     helm/
       argocd/
@@ -83,6 +85,7 @@ Current columns:
 3. Store only credential key references in CSV/Markdown.
 4. Include infra outside `192.168.1.0/24` when relevant (k3s workers currently in `192.168.0.0/24`).
 5. Update `LastUpdated` on every manual edit.
+6. NetBox is the system-of-record for modeled assets (Devices/VMs, interfaces, primary IP relationships) after sync.
 
 ## Current Environment Facts
 
@@ -150,7 +153,12 @@ Worker recovery note:
 - Worker wait-for-backend init was disabled in values to avoid rollout deadlock during first bootstrap.
 - `API_TOKEN_PEPPERS` is configured via `extraConfig` secret `netbox-extra-config` to enable v2 API token creation.
 - `network_devices.csv` sync helper: `automation/netbox/scripts/sync-network-devices-to-netbox.ps1`
-- Current sync state (2026-04-13): `258` usable hosts from CSV upserted into NetBox IP addresses and tagged `network-csv-import`.
+- NetBox asset sync helper: `automation/netbox/scripts/sync-netbox-assets-from-csv.ps1`
+- Current sync state (2026-04-13):
+  - `258` usable hosts from CSV upserted into NetBox IP addresses and tagged `network-csv-import`.
+  - `7` physical devices in `dcim/devices` with `primary_ip4` linkage.
+  - `1` VM in `virtualization/virtual-machines` (`rancherweb01`) with `primary_ip4` linkage.
+  - Current VM cluster for lab guests: `homelab-vms`.
 
 ### OpenBao (Secrets backend)
 
@@ -263,6 +271,7 @@ Current key groups include:
 4. For k3s changes, verify Rancher webhook health first (`cattle-system/rancher-webhook`).
 5. Keep service definitions in `k8s/` aligned with runtime state after every change.
 6. For n8n workflow changes, export updated JSON to `automation/n8n/workflows/exports/` and keep reusable templates in `automation/n8n/workflows/templates/`.
+7. For inventory updates, run both NetBox sync scripts: first `sync-network-devices-to-netbox.ps1` (IPs/prefixes), then `sync-netbox-assets-from-csv.ps1` (devices/VMs + primary IP links).
 
 ## Next Actions
 
