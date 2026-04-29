@@ -1,6 +1,6 @@
 # Home Lab AI Baseline Context
 
-Last updated: 2026-04-27 17:13 (America/Chicago)
+Last updated: 2026-04-28 00:25 (America/Chicago)
 
 ## Purpose
 
@@ -15,6 +15,8 @@ This repository is the baseline operational context for the home lab. It is inte
 - `automation/netbox/*`: NetBox IPAM + asset sync scripts.
 - `automation/unifi/*`: UniFi (UDM Pro) inventory fetch + NetBox sync scripts.
 - `automation/ai-workstation/*`: AI workstation automation and Strix Halo backend sync scripts.
+- `phase1-agent-todo.md`: first-phase execution backlog for agent platform, knowledge system, and automation control plane.
+- `phase1-agent-queue.yaml` + `phase1-agent-queue.json`: machine-readable execution queue for agent task orchestration.
 
 ## Repo Layout
 
@@ -343,11 +345,9 @@ Current key groups include:
 7. For inventory updates, run both NetBox sync scripts: first `sync-network-devices-to-netbox.ps1` (IPs/prefixes), then `sync-netbox-assets-from-csv.ps1` (devices/VMs + primary IP links).
 8. For UniFi context refresh, run `automation/unifi/scripts/fetch-unifi-inventory.ps1` and then `automation/unifi/scripts/sync-unifi-to-netbox.ps1 -FetchFresh`.
 9. For Strix Halo workstation inference backend operations, use `kyuz0/amd-strix-halo-toolboxes` and keep it synced with `automation/ai-workstation/scripts/sync-strix-halo-backend.ps1`.
+10. `Hermes-Test` should be treated as disposable validation only; durable planning and execution state belongs in this `lab` repo.
 
 ## Next Actions
 
-- Recover the 4 worker Pis (`192.168.1.81-84`) and restore `Ready` state.
-- After worker recovery, run OS/k3s patch upgrades on each worker to align with control-plane (`v1.28.15+k3s1`).
-- Create a cert-manager `ClusterIssuer` and migrate exposed NodePort apps to HTTPS ingress where practical.
-- Replace OpenBao dev mode with persistent/non-dev configuration when ready.
-- Complete n8n email summary flow by attaching IMAP credentials, replacing manual trigger with a schedule trigger, and adding a delivery node (email/Slack/Teams).
+- Use `phase1-agent-todo.md` as the active first-phase execution queue.
+- Keep `network_devices.csv`, NetBox, and this baseline in sync after every environment change.
