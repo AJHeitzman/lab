@@ -1,6 +1,6 @@
 # Home Lab AI Baseline Context
 
-Last updated: 2026-04-29 12:14 (America/Chicago)
+Last updated: 2026-04-29 12:29 (America/Chicago)
 
 ## Purpose
 
@@ -171,6 +171,9 @@ Worker recovery note:
   - storage backend: local file storage (`/opt/openbao/data`)
   - API listener: `http://192.168.1.25:8200`
   - initialization: completed (Shamir 1/1), instance currently unsealed
+  - secrets engine: `secret/` mounted as KV v2
+  - `.env` migration: `50` keys currently stored under `secret/lab/env/*`
+  - agent policies: `lab-context-read` (read/list env) and `lab-deploy-write` (read env + write runtime)
   - firewall: `8200/tcp` allowed from `192.168.1.0/24`
 - Credential references:
   - SSH: `LAB_SECRETS01_*`
