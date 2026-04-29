@@ -1,6 +1,6 @@
 # Home Lab AI Baseline Context
 
-Last updated: 2026-04-29 11:25 (America/Chicago)
+Last updated: 2026-04-29 12:14 (America/Chicago)
 
 ## Purpose
 
@@ -148,6 +148,7 @@ Worker recovery note:
 ### PostgreSQL Service Host
 
 - Host: `lab-pgsql01` (`192.168.1.216`, Ubuntu 24.04 LTS)
+- Networking: static `192.168.1.216/24`, gateway `192.168.1.1` (netplan; cloud-init netplan disabled)
 - PostgreSQL service is active and listening on `0.0.0.0:5432`
 - Access controls:
   - `password_encryption = scram-sha-256`
@@ -159,6 +160,21 @@ Worker recovery note:
 - Credential references:
   - SSH: `LAB-PGSQL01_*`
   - Database: `LAB_PGSQL01_DB_*`
+
+### Secrets Service Host
+
+- Host: `lab-secrets01` (`192.168.1.25`, Ubuntu 24.04 LTS)
+- Networking: static `192.168.1.25/24`, gateway `192.168.1.1` (netplan; cloud-init netplan disabled)
+- OpenBao service:
+  - binary/service install: `openbao` (`bao`) `2.5.3`
+  - systemd unit: `openbao` (enabled, active)
+  - storage backend: local file storage (`/opt/openbao/data`)
+  - API listener: `http://192.168.1.25:8200`
+  - initialization: completed (Shamir 1/1), instance currently unsealed
+  - firewall: `8200/tcp` allowed from `192.168.1.0/24`
+- Credential references:
+  - SSH: `LAB_SECRETS01_*`
+  - OpenBao: `LAB_SECRETS01_OPENBAO_*`
 
 ### AI Workstation
 
@@ -251,11 +267,13 @@ Worker recovery note:
 
 ### OpenBao (Secrets backend)
 
-- Namespace: `openbao`
-- Deployed via manifest (`k8s/manifests/openbao/openbao-dev.yaml`)
-- Service: NodePort `32000`
-- URL/API: `http://192.168.1.80:32000`
-- Mode: `dev` (lab bootstrap only, not production-safe)
+- Primary OpenBao endpoint: `http://192.168.1.25:8200` (`lab-secrets01`, persistent file storage)
+- Legacy bootstrap endpoint still present in cluster:
+  - Namespace: `openbao`
+  - Deployed via manifest (`k8s/manifests/openbao/openbao-dev.yaml`)
+  - Service: NodePort `32000`
+  - URL/API: `http://192.168.1.80:32000`
+  - Mode: `dev` (to be retired after ESO cutover)
 
 ### External Secrets Operator (ESO)
 
@@ -269,7 +287,10 @@ Worker recovery note:
 - `ClusterSecretStore`: `openbao-store`
 - Demo `ExternalSecret`: `default/openbao-sample-secret`
 - Synced secret output: `default/demo-from-openbao`
-- Vault endpoint in store: `http://openbao.openbao.svc.cluster.local:8200`
+- Vault endpoint in store currently points to legacy in-cluster dev OpenBao:
+  - `http://openbao.openbao.svc.cluster.local:8200`
+- Planned migration target:
+  - `http://192.168.1.25:8200`
 - Manifest path: `k8s/manifests/external-secrets/openbao/store-and-sample.yaml`
 
 ### Argo CD (GitOps)
@@ -345,6 +366,8 @@ Current key groups include:
 - `VM_HOST_IP`
 - `LAB-PGSQL01_*`
 - `LAB_PGSQL01_DB_*`
+- `LAB_SECRETS01_*`
+- `LAB_SECRETS01_OPENBAO_*`
 - `N8N_*`
 - `NETBOX_*`
 - `UDM_PRO_*`

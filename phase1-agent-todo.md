@@ -1,6 +1,6 @@
 # Phase 1 Agent To-Do (LAB)
 
-Last updated: 2026-04-29 11:25 (America/Chicago)
+Last updated: 2026-04-29 12:14 (America/Chicago)
 
 Machine-readable queue files:
 
@@ -31,7 +31,7 @@ Build a durable internal control plane where AI agents can safely read context, 
 |---|---|---|---|---|
 | P1-001 | P0 | Todo | Stand up internal Wiki.js knowledge system | Wiki.js deployed with auth enabled, backed by PostgreSQL, reachable internally over HTTPS, and has initial spaces for `Architecture`, `Runbooks`, and `Operations Log`. |
 | P1-002 | P0 | Done | Provision internal PostgreSQL service host | Linux VM provisioned on ESXi, PostgreSQL hardened (non-default creds, backups, firewall), and documented connection details (no secrets) for Wiki.js and future internal apps. |
-| P1-003 | P0 | Todo | Replace OpenBao dev mode with persistent configuration | OpenBao moved to non-dev mode with persistent storage, initialization/unseal process documented, and basic policy separation (read-context vs deploy-write). |
+| P1-003 | P0 | In Progress | Replace OpenBao dev mode with persistent configuration | OpenBao moved to non-dev mode with persistent storage, initialization/unseal process documented, and basic policy separation (read-context vs deploy-write). |
 | P1-004 | P0 | Todo | Wire agents to controlled context sources | Agent runtime can read from NetBox API + Wiki API + `lab` repo, with explicit read/write boundaries documented. |
 | P1-005 | P0 | Todo | Define agent change-write policy for wiki updates | Agent only writes to approved wiki paths (for example `Ops/Auto-Updates/*`) and appends timestamped change log entries with rollback note. |
 | P1-006 | P1 | Todo | Introduce ticketing queue for agent work intake | Create Jira project (or interim queue file), define statuses (`Todo`, `Ready`, `In Progress`, `Blocked`, `Done`), and map required fields for agent execution. |
