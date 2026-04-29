@@ -1,6 +1,6 @@
 # Home Lab AI Baseline Context
 
-Last updated: 2026-04-28 00:25 (America/Chicago)
+Last updated: 2026-04-28 20:45 (America/Chicago)
 
 ## Purpose
 
@@ -160,12 +160,16 @@ Worker recovery note:
   - `/mnt/ai/agent`
   - `/mnt/ai/voice`
   - `/mnt/ai/open-webui`
-- Runtime/services (2026-04-27):
+- Runtime/services (2026-04-28):
   - `ollama` systemd service active (`0.21.2`)
   - `qdrant` active via Docker (`http://192.168.1.123:6333`)
   - `open-webui` active via Docker (`http://192.168.1.123:3000`)
   - local tool-calling agent active (`http://192.168.1.123:8777/health`)
   - cockpit socket active (`https://192.168.1.123:9090`)
+  - `hermes-gateway` user systemd service active
+  - `openclaw-gateway` user systemd service active (`OpenClaw 2026.4.26`, loopback `127.0.0.1:18789`, token-auth)
+- Workstation package updates applied on 2026-04-28 via `dnf upgrade --refresh` (security/kernel included).
+- Kernel note: new 6.19.x kernels are installed; workstation reboot is still required to run newest kernel.
 - Installed Ollama models:
   - `qwen2.5:1.5b`
   - `llama3.2:1b`
@@ -346,8 +350,11 @@ Current key groups include:
 8. For UniFi context refresh, run `automation/unifi/scripts/fetch-unifi-inventory.ps1` and then `automation/unifi/scripts/sync-unifi-to-netbox.ps1 -FetchFresh`.
 9. For Strix Halo workstation inference backend operations, use `kyuz0/amd-strix-halo-toolboxes` and keep it synced with `automation/ai-workstation/scripts/sync-strix-halo-backend.ps1`.
 10. `Hermes-Test` should be treated as disposable validation only; durable planning and execution state belongs in this `lab` repo.
+11. For OpenClaw operations on the workstation, use `automation/ai-workstation/README.md` for install/status/security/runtime reference.
 
 ## Next Actions
 
 - Use `phase1-agent-todo.md` as the active first-phase execution queue.
 - Keep `network_devices.csv`, NetBox, and this baseline in sync after every environment change.
+- Reboot `ai-workstation-evox2` to activate newest installed Fedora kernel.
+- Execute `P1-013` to expand Prometheus + Grafana coverage for k3s nodes and core services.

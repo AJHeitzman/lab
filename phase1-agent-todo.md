@@ -1,6 +1,6 @@
 # Phase 1 Agent To-Do (LAB)
 
-Last updated: 2026-04-28 (America/Chicago)
+Last updated: 2026-04-28 20:45 (America/Chicago)
 
 Machine-readable queue files:
 
@@ -42,7 +42,7 @@ Build a durable internal control plane where AI agents can safely read context, 
 | P1-011 | P2 | Todo | Establish nightly agent operation runbook | Runbook includes start/stop procedures, failure budget handling, incident escalation, and evidence artifact expectations. |
 | P1-012 | P2 | Todo | Build source-of-truth sync automation | Scheduled sync verifies consistency across `network_devices.csv`, NetBox, and wiki inventory pages, then creates drift report. |
 | P1-013 | P1 | Todo | Expand Prometheus + Grafana monitoring coverage | Monitoring stack captures k3s, node/system metrics, and core service health with baseline dashboards and alerting rules. |
-| P1-014 | P1 | Todo | Install OpenClaw on AI workstation (side-by-side) | OpenClaw installed/validated on `ai-workstation-evox2` without breaking Hermes, with docs for start/status/update and secure runtime boundaries. |
+| P1-014 | P1 | Done | Install OpenClaw on AI workstation (side-by-side) | OpenClaw installed/validated on `ai-workstation-evox2` without breaking Hermes, with docs for start/status/update and secure runtime boundaries. |
 
 ## Ticketing Path (Planned)
 

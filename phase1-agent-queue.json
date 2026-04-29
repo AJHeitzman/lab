@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "last_updated": "2026-04-28T00:30:00-05:00",
+  "last_updated": "2026-04-28T20:45:00-05:00",
   "source": "phase1-agent-todo.md",
   "default_execution_policy": {
     "require_pr": true,
@@ -138,7 +138,7 @@
     {
       "id": "P1-014",
       "priority": "P1",
-      "status": "In Progress",
+      "status": "Done",
       "title": "Install OpenClaw on AI workstation (side-by-side)",
       "definition_of_done": "OpenClaw installed and validated on ai-workstation-evox2 without breaking Hermes, with docs for start/status/update and secure runtime boundaries.",
       "depends_on": []
