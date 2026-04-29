@@ -1,0 +1,32 @@
+replicaCount: 1
+revisionHistoryLimit: 3
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: false
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 256Mi
+  limits:
+    cpu: 500m
+    memory: 1Gi
+
+nodeSelector:
+  kubernetes.io/hostname: oma01rpicls01mstr01
+
+postgresql:
+  enabled: false
+
+externalPostgresql:
+  host: "192.168.1.216"
+  port: "5432"
+  database: "wikijs"
+  username: "wikijs"
+  existingSecret: "wikijs-db-secret"
+  existingSecretKey: "db-password"
+  ssl: "false"

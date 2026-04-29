@@ -1,6 +1,6 @@
 # Home Lab AI Baseline Context
 
-Last updated: 2026-04-29 12:29 (America/Chicago)
+Last updated: 2026-04-29 12:55 (America/Chicago)
 
 ## Purpose
 
@@ -157,6 +157,7 @@ Worker recovery note:
 - Bootstrap objects:
   - admin role: `lab_admin` (LOGIN, CREATEDB)
   - default database: `lab_platform`
+  - application database: `wikijs` with role `wikijs`
 - Credential references:
   - SSH: `LAB-PGSQL01_*`
   - Database: `LAB_PGSQL01_DB_*`
@@ -173,7 +174,9 @@ Worker recovery note:
   - initialization: completed (Shamir 1/1), instance currently unsealed
   - secrets engine: `secret/` mounted as KV v2
   - `.env` migration: `50` keys currently stored under `secret/lab/env/*`
+  - runtime secrets path in use: `secret/lab/runtime/*` (includes Wiki.js DB credentials)
   - agent policies: `lab-context-read` (read/list env) and `lab-deploy-write` (read env + write runtime)
+  - ESO policy/token: `eso-read-lab` with token stored in k8s secret `external-secrets/openbao-eso-token`
   - firewall: `8200/tcp` allowed from `192.168.1.0/24`
 - Credential references:
   - SSH: `LAB_SECRETS01_*`
@@ -276,7 +279,7 @@ Worker recovery note:
   - Deployed via manifest (`k8s/manifests/openbao/openbao-dev.yaml`)
   - Service: NodePort `32000`
   - URL/API: `http://192.168.1.80:32000`
-  - Mode: `dev` (to be retired after ESO cutover)
+  - Mode: `dev` (no longer used by ESO)
 
 ### External Secrets Operator (ESO)
 
@@ -290,11 +293,22 @@ Worker recovery note:
 - `ClusterSecretStore`: `openbao-store`
 - Demo `ExternalSecret`: `default/openbao-sample-secret`
 - Synced secret output: `default/demo-from-openbao`
-- Vault endpoint in store currently points to legacy in-cluster dev OpenBao:
-  - `http://openbao.openbao.svc.cluster.local:8200`
-- Planned migration target:
+- Wiki.js `ExternalSecret`: `wikijs/wikijs-db-secret` (syncs `db-password`)
+- Vault endpoint in store:
   - `http://192.168.1.25:8200`
+- Vault token source in store:
+  - `external-secrets/openbao-eso-token`
 - Manifest path: `k8s/manifests/external-secrets/openbao/store-and-sample.yaml`
+
+### Wiki.js
+
+- Namespace: `wikijs`
+- Helm chart: `requarks/wiki` (`3.0.0`)
+- Service: NodePort `32094` via `wikijs/wikijs-nodeport`
+- URL: `http://192.168.1.80:32094`
+- Database backend: external PostgreSQL on `lab-pgsql01` (`192.168.1.216:5432`, DB `wikijs`)
+- DB password source: ESO-managed secret `wikijs/wikijs-db-secret` from OpenBao key `lab/runtime/wikijs`
+- Ingress/TLS: not yet configured (HTTP bootstrap mode currently active)
 
 ### Argo CD (GitOps)
 
@@ -371,6 +385,7 @@ Current key groups include:
 - `LAB_PGSQL01_DB_*`
 - `LAB_SECRETS01_*`
 - `LAB_SECRETS01_OPENBAO_*`
+- `LAB_WIKIJS_DB_*`
 - `N8N_*`
 - `NETBOX_*`
 - `UDM_PRO_*`

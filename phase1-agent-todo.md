@@ -1,6 +1,6 @@
 # Phase 1 Agent To-Do (LAB)
 
-Last updated: 2026-04-29 12:29 (America/Chicago)
+Last updated: 2026-04-29 12:55 (America/Chicago)
 
 Machine-readable queue files:
 
@@ -29,9 +29,9 @@ Build a durable internal control plane where AI agents can safely read context, 
 
 | ID | Priority | Status | Task | Definition of Done |
 |---|---|---|---|---|
-| P1-001 | P0 | Todo | Stand up internal Wiki.js knowledge system | Wiki.js deployed with auth enabled, backed by PostgreSQL, reachable internally over HTTPS, and has initial spaces for `Architecture`, `Runbooks`, and `Operations Log`. |
+| P1-001 | P0 | In Progress | Stand up internal Wiki.js knowledge system | Wiki.js deployed with auth enabled, backed by PostgreSQL, reachable internally over HTTPS, and has initial spaces for `Architecture`, `Runbooks`, and `Operations Log`. Remaining: TLS/HTTPS and initial space seeding. |
 | P1-002 | P0 | Done | Provision internal PostgreSQL service host | Linux VM provisioned on ESXi, PostgreSQL hardened (non-default creds, backups, firewall), and documented connection details (no secrets) for Wiki.js and future internal apps. |
-| P1-003 | P0 | In Progress | Replace OpenBao dev mode with persistent configuration | OpenBao moved to non-dev mode with persistent storage, initialization/unseal process documented, and basic policy separation (read-context vs deploy-write). Remaining: repoint ESO to `lab-secrets01` and retire in-cluster dev OpenBao. |
+| P1-003 | P0 | Done | Replace OpenBao dev mode with persistent configuration | OpenBao VM service (`lab-secrets01`) is persistent and active, secrets migrated to KV v2, and ESO now reads from VM OpenBao via scoped token (`external-secrets/openbao-eso-token`). |
 | P1-004 | P0 | Todo | Wire agents to controlled context sources | Agent runtime can read from NetBox API + Wiki API + `lab` repo, with explicit read/write boundaries documented. |
 | P1-005 | P0 | Todo | Define agent change-write policy for wiki updates | Agent only writes to approved wiki paths (for example `Ops/Auto-Updates/*`) and appends timestamped change log entries with rollback note. |
 | P1-006 | P1 | Todo | Introduce ticketing queue for agent work intake | Create Jira project (or interim queue file), define statuses (`Todo`, `Ready`, `In Progress`, `Blocked`, `Done`), and map required fields for agent execution. |
@@ -62,8 +62,7 @@ Build a durable internal control plane where AI agents can safely read context, 
 
 ## Ready Queue Seed (Suggested First Work Items)
 
-1. P1-001 Wiki.js deployment using PostgreSQL backend.
-2. P1-003 OpenBao non-dev migration.
-3. P1-009 Internal image registry deployment (Harbor preferred).
-4. P1-008 Self-hosted GitHub runner deployment.
-5. P1-006 Jira project setup for agent queue intake.
+1. P1-001 Wiki.js hardening: HTTPS + initial spaces.
+2. P1-009 Internal image registry deployment (Harbor preferred).
+3. P1-008 Self-hosted GitHub runner deployment.
+4. P1-006 Jira project setup for agent queue intake.
